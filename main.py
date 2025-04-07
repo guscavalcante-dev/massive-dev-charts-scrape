@@ -82,6 +82,34 @@ async def scrape_film_page(client, film_name, url):
     except Exception as e:
         print(f"❌ Erro em {film_name}: {e}")
 
+def build_index():
+    print("📚 Gerando índice dos filmes...")
+    index = []
+
+    for file in os.listdir(OUTPUT_DIR):
+        if file.endswith(".json"):
+            path = os.path.join(OUTPUT_DIR, file)
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    if data:
+                        film_name = data[0]['film']
+                        index.append({
+                            "film": film_name,
+                            "filename": file,
+                            "path": path
+                        })
+            except Exception as e:
+                print(f"⚠️ Erro lendo {file}: {e}")
+
+    index.sort(key=lambda x: x['film'].lower())
+
+    with open("index.json", 'w', encoding='utf-8') as f:
+        json.dump(index, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Índice salvo com {len(index)} entradas.")
+
+
 
 async def main():
     async with httpx.AsyncClient(http2=True) as client:
@@ -94,6 +122,7 @@ async def main():
         ]
 
         await tqdm_asyncio.gather(*tasks, desc="⏳ Processando filmes")
+        build_index()
 
 
 if __name__ == "__main__":
