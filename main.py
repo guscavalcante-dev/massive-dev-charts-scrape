@@ -6,6 +6,8 @@ import os
 from urllib.parse import quote_plus
 from tqdm.asyncio import tqdm_asyncio
 
+from print_ok import print_ok
+
 BASE_URL = "https://www.digitaltruth.com/devchart.php"
 OUTPUT_DIR = "charts_async"
 MAX_CONCURRENT_REQUESTS = 4
@@ -123,6 +125,7 @@ async def main():
 
         await tqdm_asyncio.gather(*tasks, desc="⏳ Processando filmes")
         build_index()
+        print_ok()
 
 
 if __name__ == "__main__":
