@@ -108,6 +108,7 @@ def build_index():
 
     with open("index.json", 'w', encoding='utf-8') as f:
         json.dump(index, f, indent=2, ensure_ascii=False)
+        print(f"Salvei alguma coisa esquisita!")
 
     print(f"✅ Índice salvo com {len(index)} entradas.")
 
