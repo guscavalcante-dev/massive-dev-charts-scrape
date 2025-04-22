@@ -5,6 +5,7 @@ import json
 import os
 from urllib.parse import quote_plus
 from tqdm.asyncio import tqdm_asyncio
+from dice import roll_dice
 
 BASE_URL = "https://www.digitaltruth.com/devchart.php"
 OUTPUT_DIR = "charts_async"
@@ -84,6 +85,7 @@ async def scrape_film_page(client, film_name, url):
 
 
 async def main():
+    roll_dice()
     async with httpx.AsyncClient(http2=True) as client:
         film_urls = await get_all_film_urls(client)
         print(f"🎞️ {len(film_urls)} filmes encontrados.\n")
